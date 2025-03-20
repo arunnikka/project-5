@@ -1,37 +1,42 @@
 public class Giro extends Rekening {
-    double limitPenarikan;
+     double limitPenarikan;
+     
+     public Giro(String namaPemilik, String nomorRekening, double saldo, double limitPenarikan) {
+         super(namaPemilik, nomorRekening, saldo);
+         this.limitPenarikan = limitPenarikan;
+     }
+     
+     public double getLimitPenarikan() {
+         return limitPenarikan;
+     }
+     
+     public void setLimitPenarikan(double limitPenarikan) {
+         this.limitPenarikan = limitPenarikan;
+     }
+     
+     @Override
+     public void tarik(double jumlah) {
+         if (saldo - jumlah < -limitPenarikan) {
+             System.out.println("Penarikan melebihi limit giro.");
+         } else {
+             saldo -= jumlah;
+             System.out.println("Tarik: " + jumlah);
+         }
+     }
+     
 
-    public Giro(String namaPemilik, String noRekening, double saldo, double limitPenarikan) {
-        super(namaPemilik, noRekening, saldo);
-        this.limitPenarikan = limitPenarikan;
-    }
-
-    public double getlimitPenarikan(){
-        return limitPenarikan;
-    }
-
-    public void  setlimitPenarikan(double limitPenarikan){
-        this.limitPenarikan = limitPenarikan;
-    }
-    
-    public void setor(double jumlahPenarikan){
-        super.addSetor(jumlahPenarikan);
-    }
-
-    public void setor(double jumlah, boolean transfer){
-        if (transfer == true){
-            jumlah = jumlah + 2500;
-        }
-        super.addSetor(jumlah);
-    }
-
-    public void penarikan(double jumlahPenarikan){
-        if (jumlahPenarikan <= limitPenarikan){
-            super.addTarik(jumlahPenarikan);
-        } else {
-            System.out.println("Maaf, jumlah penarikan melebihi limit penarikan");
-        }
-    }
-    
-
-}
+     public void setor(double jumlah, boolean transfer) {
+         super.setor(jumlah); 
+         if (transfer) {
+             saldo += 2500;
+             System.out.println("Biaya administrasi transfer diterima: Rp 2500");
+         }
+     }
+     
+     @Override
+     public void tampilkanInfo() {
+         super.tampilkanInfo();
+         System.out.println("Jenis Rekening: Giro");
+         System.out.println("Limit Penarikan: " + limitPenarikan);
+     }
+ }
